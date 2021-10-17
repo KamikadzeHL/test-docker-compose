@@ -12,8 +12,14 @@ services:
     volumes:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - app-network
+    healthcheck:
+      test: curl -sS http://127.0.0.1 || echo 1
+      interval: 5s
+      timeout: 10s
+      retries: 3
+
+#    networks:
+#      - app-network
 
 #MySQL Service
   db:
@@ -31,8 +37,14 @@ services:
    volumes:
     - dbdata:/var/lib/mysql
     - ./mysql/my.cnf:/etc/mysql/my.cnf
-   networks:
-    - app-network
+   healthcheck:
+    test: curl -sS http://127.0.0.1 || echo 1
+    interval: 5s
+    timeout: 10s
+    retries: 3
+
+#   networks:
+#    - app-network
 
 #PHP Service
   app:
@@ -50,8 +62,14 @@ services:
    volumes:
     - ./:/var/www
     - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-   networks:
-    - app-network
+   healthcheck:
+    test: curl -sS http://127.0.0.1 || echo 1
+    interval: 5s
+    timeout: 10s
+    retries: 3
+
+#   networks:
+#    - app-network
 
 #Redis Service
   redis:
@@ -63,13 +81,19 @@ services:
     - "3679:3679"
    environment:
     - ALLOW_EMPTY_PASSWORD=yes
-   networks:
-    - app-network
+   healthcheck:
+    test: curl -sS http://127.0.0.1 || echo 1
+    interval: 5s
+    timeout: 10s
+    retries: 3
+
+#   networks:
+#    - app-network
 
 #Docker Networks
-networks:
-   app-network:
-     driver: bridge
+#networks:
+#   app-network:
+#     driver: bridge
 
 #Volumes
 volumes:
